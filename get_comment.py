@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import requests
 import argparse
+from itertools import repeat
 
 
 class Scraping():
@@ -32,7 +33,7 @@ class Scraping():
     def get_comment(self):
         comment_data = []
 
-        while(1):
+        for _ in repeat(None):
             try:
                 # get next comment url
                 driver = webdriver.Chrome(options=self.options, executable_path="/usr/bin/chromedriver")
@@ -74,7 +75,7 @@ class Scraping():
     
     def save(self, comment_data):
         # save
-        with open("comment_data1.txt", mode='w', encoding="utf-8") as f:
+        with open("comment_data.txt", mode='w', encoding="utf-8") as f:
             f.writelines(comment_data)
 
 
