@@ -65,3 +65,4 @@ while(1):
 # save
 with open("comment_data.txt", mode='w', encoding="utf-8") as f:
     f.writelines(comment_data)
+
