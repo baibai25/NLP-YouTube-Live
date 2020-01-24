@@ -15,15 +15,15 @@ class Scraping():
         self.next_url = self.get_source()
 
     def get_source(self):
-        next_url = ""
+        next_url = ''
         
         # get html source and live_chat_replay URL
         html = requests.get(self.target_url)
-        soup = BeautifulSoup(html.text, "html.parser")
+        soup = BeautifulSoup(html.text, 'html.parser')
 
-        for iframe in soup.find_all("iframe"):
-            if("live_chat_replay" in iframe["src"]):
-                next_url = iframe["src"]
+        for iframe in soup.find_all('iframe'):
+            if('live_chat_replay' in iframe['src']):
+                next_url = iframe['src']
 
         return next_url
 
@@ -35,36 +35,36 @@ class Scraping():
         for _ in repeat(None):
             # get next comment url
             html = session.get(self.next_url, headers=headers)
-            soup = BeautifulSoup(html.text, "lxml")
+            soup = BeautifulSoup(html.text, 'lxml')
 
-            # find "script"
-            for scrp in soup.find_all("script"):
-                if "window[\"ytInitialData\"]" in scrp.text:
-                    dict_str = scrp.text.split(" = ")[1]
+            # find 'script'
+            for scrp in soup.find_all('script'):
+                if 'window[\'ytInitialData\']' in scrp.text:
+                    dict_str = scrp.text.split(' = ')[1]
 
             # convert javascript format 
-            dict_str = dict_str.replace("false","False")
-            dict_str = dict_str.replace("true","True")
+            dict_str = dict_str.replace('false','False')
+            dict_str = dict_str.replace('true','True')
 
             # convert to dictionary
-            dict_str = dict_str.rstrip("  \n;")
+            dict_str = dict_str.rstrip('  \n;')
             dics = eval(dict_str)
 
             # next live_chat_replay url
-            # "https://www.youtube.com/live_chat_replay?continuation="
+            # 'https://www.youtube.com/live_chat_replay?continuation='
             try:
-                continue_url = dics["continuationContents"]["liveChatContinuation"]["continuations"][0]["liveChatReplayContinuationData"]["continuation"]
+                continue_url = dics['continuationContents']['liveChatContinuation']['continuations'][0]['liveChatReplayContinuationData']['continuation']
             except:
                 # not found url
                 break
             else:
-                self.next_url = "https://www.youtube.com/live_chat_replay?continuation=" + continue_url
+                self.next_url = 'https://www.youtube.com/live_chat_replay?continuation=' + continue_url
             
             # get comment data
-            for samp in dics["continuationContents"]["liveChatContinuation"]["actions"][1:]:
+            for samp in dics['continuationContents']['liveChatContinuation']['actions'][1:]:
                 try:
-                    comment_path = samp["replayChatItemAction"]["actions"][0]["addChatItemAction"]["item"]
-                    comment_path = str(comment_path["liveChatTextMessageRenderer"]["message"]["runs"][0]["text"])+"\n"
+                    comment_path = samp['replayChatItemAction']['actions'][0]['addChatItemAction']['item']
+                    comment_path = str(comment_path['liveChatTextMessageRenderer']['message']['runs'][0]['text'])+'\n'
                     comment_data.append(comment_path)
                 except:
                     # handling super chat?
@@ -73,7 +73,7 @@ class Scraping():
         self.save(comment_data)
 
     def save(self, comment_data):
-        with open("comment_data.txt", mode='w', encoding="utf-8") as f:
+        with open('comment_data.txt', mode='w', encoding='utf-8') as f:
             f.writelines(comment_data)
 
 
