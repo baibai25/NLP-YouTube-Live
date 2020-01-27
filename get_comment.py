@@ -39,12 +39,12 @@ class Scraping():
 
             # find 'script'
             for scrp in soup.find_all('script'):
-                if 'window[\'ytInitialData\']' in scrp.text:
+                if 'window[\"ytInitialData\"]' in scrp.text:
                     dict_str = scrp.text.split(' = ')[1]
 
-            # convert javascript format 
-            dict_str = dict_str.replace('false','False')
-            dict_str = dict_str.replace('true','True')
+            # convert javascript format
+            dict_str = dict_str.replace('false', 'False')
+            dict_str = dict_str.replace('true', 'True')
 
             # convert to dictionary
             dict_str = dict_str.rstrip('  \n;')
