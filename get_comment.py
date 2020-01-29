@@ -62,14 +62,24 @@ class Scraping():
             
             # get comment data
             for samp in dics['continuationContents']['liveChatContinuation']['actions'][1:]:
+                # Normal comment
                 try:
                     comment_path = samp['replayChatItemAction']['actions'][0]['addChatItemAction']['item']
                     comment_path = str(comment_path['liveChatTextMessageRenderer']['message']['runs'][0]['text'])+'\n'
                     comment_data.append(comment_path)
                 except:
-                    # handling super chat?
                     pass
+                
+                # Super Chat comment
+                try:
+                    comment_path = samp['replayChatItemAction']['actions'][0]['addLiveChatTickerItemAction']['item']
+                    comment_path = comment_path['liveChatTickerPaidMessageItemRenderer']['showItemEndpoint']['showLiveChatItemEndpoint']
+                    comment_path = str(comment_path['renderer']['liveChatPaidMessageRenderer']['message']['runs'][0]['text'])+'\n'
+                    comment_data.append(comment_path)
 
+                except:
+                    pass
+                    
         self.save(comment_data)
 
     def save(self, comment_data):
