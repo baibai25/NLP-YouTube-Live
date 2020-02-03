@@ -40,7 +40,10 @@ class Scraping():
             # find 'script'
             for scrp in soup.find_all('script'):
                 if 'window[\"ytInitialData\"]' in scrp.text:
-                    dict_str = scrp.text.split(' = ')[1]
+
+                    dict_str = ''
+                    for i in range(len(scrp.text.split(' = '))-1):
+                        dict_str += scrp.text.split(' = ')[i+1]
 
             # convert javascript format
             dict_str = dict_str.replace('false', 'False')
@@ -76,7 +79,6 @@ class Scraping():
                     comment_path = comment_path['liveChatTickerPaidMessageItemRenderer']['showItemEndpoint']['showLiveChatItemEndpoint']
                     comment_path = str(comment_path['renderer']['liveChatPaidMessageRenderer']['message']['runs'][0]['text'])+'\n'
                     comment_data.append(comment_path)
-
                 except:
                     pass
                     
