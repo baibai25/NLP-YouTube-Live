@@ -1,9 +1,6 @@
 # NLP-YouTube-Live
 Natural language processing for YouTube Live
 
-# NLP-YouTube-Live
-Natural language processing for YouTube Live
-
 ## Article (Japanese)
 [https://qiita.com/baibai25/items/311041affde6749e7161](https://qiita.com/baibai25/items/311041affde6749e7161)
 
